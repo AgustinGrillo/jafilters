@@ -1,49 +1,13 @@
+package world;
+
+import world.assets.*;
 import java.util.Random;
-
-public class test {
-
-   public static void main(String []args) {
-      System.out.println("Start World"); // prints Hello World
-      World world = new World();
-      world.plot();
-
-   }
-}
-
-/**
- * Robot
- */
-class Robot {
-    int x;
-    int y;
-
-    Robot(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-    
-}
-
-
-/**
- * Tower
- */
-class Tower {
-    int x;
-    int y;
-
-    Tower(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-    
-}
 
 
 /**
  * World
  */
-class World {
+public class World {
 
     private int width = 20;
     private int height = 20;
@@ -52,7 +16,7 @@ class World {
     Robot robot;
     Tower tower1, tower2;
 
-    World(){
+    public World(){
         robot = new Robot(randomizer.nextInt(width), randomizer.nextInt(height));
 
         int tow_x, tow_y;
@@ -69,7 +33,7 @@ class World {
 
     }
 
-    void plot(){
+    public void plot(){
         String c;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
