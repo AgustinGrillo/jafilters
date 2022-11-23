@@ -7,6 +7,6 @@ package world.interfaces;
 public interface Spawnable {
 
     public float[] getXYPosition();
-    public String getID();
+    public int getID();
     public String getSymbol();
 }

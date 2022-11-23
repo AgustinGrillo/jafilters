@@ -1,15 +1,12 @@
 package world.spawnables;
 
+import world.spawnables.Base;
+
+
 /**
  * Robot
  */
-public class Robot {
-    public int x;
-    public int y;
+public class Robot extends Base{
 
-    public Robot(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-    
 }
+
