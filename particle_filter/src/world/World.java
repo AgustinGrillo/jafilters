@@ -1,6 +1,6 @@
 package world;
 
-import world.assets.*;
+import world.spawnables.*;
 import java.util.Random;
 
 
@@ -8,6 +8,8 @@ import java.util.Random;
  * World
  */
 public class World {
+    // TODO: world
+    // - Generalize class to multiple (variable) assets/elements
 
     private int width = 60;
     private int height = 20;

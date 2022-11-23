@@ -1,13 +1,13 @@
-package world.assets;
+package world.spawnables;
 
 /**
- * Tower
+ * Robot
  */
-public class Tower {
+public class Robot {
     public int x;
     public int y;
 
-    public Tower(int x, int y){
+    public Robot(int x, int y){
         this.x = x;
         this.y = y;
     }
