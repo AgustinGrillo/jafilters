@@ -12,8 +12,8 @@ import java.util.ArrayList;
 abstract public class Base implements Observerbale, Spawnable{
     // Attributes
     // Spawnable related attributes
-    private float x;
-    private float y;
+    protected float x;
+    protected float y;
     private int id;
     private String symbol;
     // Observable related attributes
@@ -30,8 +30,15 @@ abstract public class Base implements Observerbale, Spawnable{
         observers = new ArrayList<Observer> ();
     }
 
-    abstract void move();
+    abstract bool _move(float speed, float angle);
 
+    // TODO: Oberload method to accept different arguments
+    public void move(float speed, float angle){
+        if (_move(speed, angle)) {
+            notifyObservers();
+        }
+    }
+    
     public float[] getXYPosition(){
         float[] pos = {this.x, this.y};
         return pos;
