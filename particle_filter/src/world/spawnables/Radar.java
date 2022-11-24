@@ -12,7 +12,7 @@ public class Radar extends Base{
         super(spawn_x, spawn_y, id, symbol);
     }
 
-    bool _move(float speed, float angle){
+    protected bool _move(float speed, float angle){
         System.out.println("Radar is not movable!");
         return false;
     }

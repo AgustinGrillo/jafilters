@@ -13,7 +13,7 @@ public class Robot extends Base{
         super(spawn_x, spawn_y, id, symbol);
     }
 
-    bool _move(float speed, float angle){
+    protected bool _move(float speed, float angle){
         this.x +=  speed * Math.cos(angle);
         this.y +=  speed * Math.sin(angle);
         return true;

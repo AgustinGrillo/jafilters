@@ -30,7 +30,7 @@ abstract public class Base implements Observerbale, Spawnable{
         observers = new ArrayList<Observer> ();
     }
 
-    abstract bool _move(float speed, float angle);
+    abstract protected bool _move(float speed, float angle);
 
     // TODO: Oberload method to accept different arguments
     public void move(float speed, float angle){
