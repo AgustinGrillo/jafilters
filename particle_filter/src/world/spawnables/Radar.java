@@ -1,12 +1,12 @@
 package world.spawnables;
 
-import world.spawnables.Base;
+import world.spawnables.BaseSpawnable;
 
 
 /**
  * Radar
  */
-public class Radar extends Base{
+public class Radar extends BaseSpawnable{
 
     Radar(float spawn_x, float spawn_y, int id, String symbol){
         super(spawn_x, spawn_y, id, symbol);

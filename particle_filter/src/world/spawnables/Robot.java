@@ -1,13 +1,13 @@
 package world.spawnables;
 
-import world.spawnables.Base;
+import world.spawnables.BaseSpawnable;
 import java.lang.Math;
 
 
 /**
  * Robot
  */
-public class Robot extends Base{
+public class Robot extends BaseSpawnable{
 
     Robot(float spawn_x, float spawn_y, int id, String symbol){
         super(spawn_x, spawn_y, id, symbol);

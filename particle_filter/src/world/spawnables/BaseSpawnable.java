@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 
 /**
- * Base Abstract Class
+ * Base Abstract Class: BaseSpawnable
  */
-abstract public class Base implements Observerbale, Spawnable{
+abstract public class BaseSpawnable implements Observerbale, Spawnable{
     // Attributes
     // Spawnable related attributes
     protected float x;
@@ -21,7 +21,7 @@ abstract public class Base implements Observerbale, Spawnable{
 
     // Methods
     // Spawnable related methods
-    public Base(float spawn_x, float spawn_y, int id, String symbol){
+    public BaseSpawnable(float spawn_x, float spawn_y, int id, String symbol){
         this.x = spawn_x;
         this.y = spawn_y;
         this.id = id;
