@@ -4,8 +4,7 @@ import world.interfaces.Observer;
 import world.interfaces.Observable;
 import world.spawnables.*;
 import world.util.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.lang.Math;
 import java.util.Random;
 
 
@@ -71,14 +70,23 @@ public class World implements Observer{
     }
 
     private float[] cell2Coord(int[] cell){
-        // TODO:
-        return new float[]{0, 0};
+        int cell_row = cell[0];
+        int cell_col = cell[1];
 
+        float coord_x = cell_col * width / render_cols; 
+        float coord_y = cell_row * height / render_rows; 
+
+        return new float[]{coord_x, coord_y};
     }
 
     private int[] coord2Cell(float[] coord){
-        // TODO:
-        return new int[]{0, 0};
+        float coord_x = coord[0];
+        float coord_y = coord[1];
+
+        int cell_col = Math.round(coord_x * render_cols / width); 
+        int cell_row = Math.round(coord_y * render_rows / height); 
+
+        return new int[]{cell_row, cell_col};
 
     }
 
