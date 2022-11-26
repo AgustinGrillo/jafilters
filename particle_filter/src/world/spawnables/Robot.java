@@ -9,7 +9,7 @@ import java.lang.Math;
  */
 public class Robot extends BaseSpawnable{
 
-    Robot(float spawn_x, float spawn_y, int id, String symbol){
+    public Robot(float spawn_x, float spawn_y, int id, String symbol){
         super(spawn_x, spawn_y, id, symbol);
     }
 

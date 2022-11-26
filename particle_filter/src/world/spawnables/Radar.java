@@ -8,7 +8,7 @@ import world.spawnables.BaseSpawnable;
  */
 public class Radar extends BaseSpawnable{
 
-    Radar(float spawn_x, float spawn_y, int id, String symbol){
+    public Radar(float spawn_x, float spawn_y, int id, String symbol){
         super(spawn_x, spawn_y, id, symbol);
     }
 

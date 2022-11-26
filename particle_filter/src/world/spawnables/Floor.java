@@ -8,7 +8,7 @@ import world.spawnables.BaseSpawnable;
  */
 public class Floor extends BaseSpawnable{
 
-    Floor(float spawn_x, float spawn_y, int id, String symbol){
+    public Floor(float spawn_x, float spawn_y, int id, String symbol){
         super(spawn_x, spawn_y, id, symbol);
     }
 
