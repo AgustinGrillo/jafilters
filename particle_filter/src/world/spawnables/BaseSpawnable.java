@@ -51,6 +51,10 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     public String getSymbol(){
         return this.symbol;
     }
+
+    public String toString() {
+        return this.symbol;
+    }
     
     // Observable related methods
     public void registerObserver(Observer o){

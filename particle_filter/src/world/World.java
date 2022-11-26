@@ -3,7 +3,9 @@ package world;
 import world.interfaces.Observer;
 import world.interfaces.Observable;
 import world.spawnables.*;
+import world.util.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -17,28 +19,23 @@ public class World implements Observer{
 
     private float width = 6;        // Coordinate
     private float height = 2;       // Coordinate
-    private int render_rows = 60;   // Cell
-    private int render_cols = 20;   // Cell
+    private int render_rows = 20;   // Cell
+    private int render_cols = 60;   // Cell
     public BaseSpawnable[] radars;
     public BaseSpawnable[] robots;
     BaseSpawnable[][] empty_world = new BaseSpawnable[render_rows][render_cols];
     BaseSpawnable[][] world;
 
     Random randomizer = new Random();
+    
+    //
+    //"•"
+    //"•"
 
-    // Terminal coloring
-    static final String ANSI_RESET = "\u001B[0m";
-    static final String ANSI_BLACK = "\u001B[30m";
-    static final String ANSI_GREY = "\u001B[2m";
-    static final String ANSI_RED = "\u001B[31m";
-    static final String ANSI_GREEN = "\u001B[32m";
-    static final String ANSI_YELLOW = "\u001B[33m";
-    static final String ANSI_BLUE = "\u001B[34m";
-    static final String ANSI_PURPLE = "\u001B[35m";
-    static final String ANSI_CYAN = "\u001B[36m";
-    static final String ANSI_WHITE = "\u001B[37m";
 
     public World(){
+        createEmptyWorld();
+        world = empty_world;
         // robot = new Robot(randomizer.nextInt(width), randomizer.nextInt(height));
         //
         // int tow_x, tow_y;
@@ -60,9 +57,17 @@ public class World implements Observer{
     }
 
     private void createEmptyWorld(){
-        // TODO: Add floor elements
         // Overkill??
+        float[] floor_coord;
+        int floor_id = 0;
+        String floor_symbol = Color.ANSI_GREY + "·" + Color.ANSI_RESET;
 
+        for (int i = 0; i < empty_world.length; i++) {
+            for (int j = 0; j < empty_world[i].length; j++) {
+                floor_coord = cell2Coord(new int[]{i, j});
+                empty_world[i][j] = new Floor(floor_coord[0], floor_coord[1], floor_id, floor_symbol);
+            }
+        }
     }
 
     private float[] cell2Coord(int[] cell){
@@ -78,21 +83,16 @@ public class World implements Observer{
     }
 
     public void plot(){
-        // String c;
-        // for (int i = 0; i < height; i++) {
-        //     for (int j = 0; j < width; j++) {
-        //         if (i == robot.y && j == robot.x) {
-        //             c = ANSI_GREEN + "º" + ANSI_RESET;
-        //         } else if ((i == tower1.y && j == tower1.x) || (i == tower2.y && j == tower2.x)) {
-        //             c = ANSI_YELLOW + "×" + ANSI_RESET;
-        //         } else {
-        //             // c = "•";
-        //             c = ANSI_GREY + "·" + ANSI_RESET;
-        //         }
-        //         System.out.print(c);
-        //     }
-        //     System.out.println("");
-        // }
+        String formatted_string = "";
+        for (int i = 0; i < world.length; i++) {
+            for (int j = 0; j < world[i].length; j++) {
+                formatted_string += world[i][j].toString();
+            }
+            formatted_string += "\n";
+        }
+        formatted_string += "\n";
+
+        System.out.print(formatted_string);
     }
     
 }
