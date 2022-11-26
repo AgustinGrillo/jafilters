@@ -13,7 +13,7 @@ public class Robot extends BaseSpawnable{
         super(spawn_x, spawn_y, id, symbol);
     }
 
-    protected bool _move(float speed, float angle){
+    protected boolean _move(float speed, float angle){
         this.x +=  speed * Math.cos(angle);
         this.y +=  speed * Math.sin(angle);
         return true;

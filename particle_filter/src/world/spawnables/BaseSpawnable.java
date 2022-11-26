@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Base Abstract Class: BaseSpawnable
  */
-abstract public class BaseSpawnable implements Observerbale, Spawnable{
+abstract public class BaseSpawnable implements Observable, Spawnable{
     // Attributes
     // Spawnable related attributes
     protected float x;
@@ -17,7 +17,7 @@ abstract public class BaseSpawnable implements Observerbale, Spawnable{
     private int id;
     private String symbol;
     // Observable related attributes
-    private ArrayList<java.util.Observer> observers;
+    private ArrayList<Observer> observers;
 
     // Methods
     // Spawnable related methods
@@ -30,7 +30,7 @@ abstract public class BaseSpawnable implements Observerbale, Spawnable{
         observers = new ArrayList<Observer> ();
     }
 
-    abstract protected bool _move(float speed, float angle);
+    abstract protected boolean _move(float speed, float angle);
 
     // TODO: Oberload method to accept different arguments
     public void move(float speed, float angle){
