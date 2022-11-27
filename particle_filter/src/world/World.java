@@ -74,20 +74,25 @@ public class World implements Observer{
         // Get new item position
         float[] new_coord = item.getXYPosition();
         int[] new_cell = coord2Cell(new_coord);
-        // Set new item it world
-        world[new_cell[0]][new_cell[1]] = item;
-        // Remove item from old position
+        // Get old item position
         float[] old_coord = item.getPreviousXYPosition();
         int[] old_cell = coord2Cell(old_coord);
-        // Check if there was another object in the previous pos, 
-        // to avoid deletion (due to overlap).
-        BaseSpawnable item_prev_cell = empty_world[old_cell[0]][old_cell[1]];
-        for (BaseSpawnable other_item : items) {
-            if ((other_item.getID() != item.getID()) && Arrays.equals(coord2Cell(other_item.getXYPosition()), old_cell)) {
-                item_prev_cell = other_item;
+
+        // If item moved from cell
+        if (!Arrays.equals(new_cell, old_cell)) {
+            // Set in new cell
+            world[new_cell[0]][new_cell[1]] = item;
+            // Remove from old cell 
+            BaseSpawnable item_prev_cell = empty_world[old_cell[0]][old_cell[1]];
+            // Check if there was another object in the previous pos, 
+            // to avoid deletion (due to overlap).
+            for (BaseSpawnable other_item : items) {
+                if ((other_item.getID() != item.getID()) && Arrays.equals(coord2Cell(other_item.getXYPosition()), old_cell)) {
+                    item_prev_cell = other_item;
+                }
             }
-        }
-        world[old_cell[0]][old_cell[1]] = item_prev_cell;
+            world[old_cell[0]][old_cell[1]] = item_prev_cell;
+        } 
     }
 
     private float[] cell2Coord(int[] cell){
