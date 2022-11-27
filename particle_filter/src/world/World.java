@@ -5,6 +5,7 @@ import world.interfaces.Observable;
 import world.spawnables.*;
 import world.util.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.lang.Math;
 
 
@@ -31,7 +32,8 @@ public class World implements Observer{
     public World(ArrayList<BaseSpawnable> initial_items){
         // Create empty world
         createEmptyWorld();
-        world = empty_world;
+        // Create copy
+        world = Arrays.stream(empty_world).map(BaseSpawnable[]::clone).toArray(BaseSpawnable[][]::new);
 
         for (BaseSpawnable item : initial_items) {
             items.add(item);
@@ -43,8 +45,8 @@ public class World implements Observer{
     }
 
     public void update(BaseSpawnable observable){
-        // TODO:
-        observable.getXYPosition();
+        this.updateItemInWorld(observable);
+        this.plot();
     }
 
     private void createEmptyWorld(){
@@ -59,6 +61,23 @@ public class World implements Observer{
                 empty_world[i][j] = new Floor(floor_coord[0], floor_coord[1], floor_id, floor_symbol);
             }
         }
+    }
+
+    private void updateItemInWorld(BaseSpawnable item){
+        // NOTE: Search for an alternative to increase performance and code prolixity.
+        // Get new item position
+        float[] new_coord = item.getXYPosition();
+        int[] new_cell = coord2Cell(new_coord);
+        int item_id = item.getID();
+        String item_symbol = item.getSymbol();
+        // Set new item it world
+        world[new_cell[0]][new_cell[1]] = item;
+        // Remove item from old position
+        float[] old_coord = item.getPreviousXYPosition();
+        int[] old_cell = coord2Cell(old_coord);
+        // TODO: Ckeck if there was another object in the previous pos, 
+        // to avoid deletion.
+        world[old_cell[0]][old_cell[1]] = empty_world[old_cell[0]][old_cell[1]];
     }
 
     private float[] cell2Coord(int[] cell){
