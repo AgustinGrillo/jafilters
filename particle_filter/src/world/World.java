@@ -68,16 +68,20 @@ public class World implements Observer{
         // Get new item position
         float[] new_coord = item.getXYPosition();
         int[] new_cell = coord2Cell(new_coord);
-        int item_id = item.getID();
-        String item_symbol = item.getSymbol();
         // Set new item it world
         world[new_cell[0]][new_cell[1]] = item;
         // Remove item from old position
         float[] old_coord = item.getPreviousXYPosition();
         int[] old_cell = coord2Cell(old_coord);
-        // TODO: Ckeck if there was another object in the previous pos, 
-        // to avoid deletion.
-        world[old_cell[0]][old_cell[1]] = empty_world[old_cell[0]][old_cell[1]];
+        // Ckeck if there was another object in the previous pos, 
+        // to avoid deletion (due to overlap).
+        BaseSpawnable item_prev_cell = empty_world[old_cell[0]][old_cell[1]];
+        for (BaseSpawnable other_item : items) {
+            if ((other_item.getID() != item.getID()) && Arrays.equals(coord2Cell(other_item.getXYPosition()), old_cell)) {
+                item_prev_cell = other_item;
+            }
+        }
+        world[old_cell[0]][old_cell[1]] = item_prev_cell;
     }
 
     private float[] cell2Coord(int[] cell){
