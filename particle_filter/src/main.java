@@ -15,7 +15,7 @@ public class main {
         BaseSpawnable robot = new Robot(random.nextFloat(6), random.nextFloat(2), 1,
                                         Color.ANSI_GREEN + "•" + Color.ANSI_RESET);
         BaseSpawnable radar = new Radar(random.nextFloat(6), random.nextFloat(2), 2,
-                                        Color.ANSI_YELLOW + "■" + Color.ANSI_RESET);
+                                        Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
         ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>(Arrays.asList(robot, radar));
 
         // Create world

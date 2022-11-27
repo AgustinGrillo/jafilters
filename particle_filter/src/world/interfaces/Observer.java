@@ -1,6 +1,6 @@
 package world.interfaces;
 
-import world.interfaces.Observable;
+import world.spawnables.BaseSpawnable;
 
 
 /**
@@ -8,6 +8,6 @@ import world.interfaces.Observable;
  */
 public interface Observer {
 
-    public void update(Observable o);
+    public void update(BaseSpawnable observable);
 
 }

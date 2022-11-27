@@ -39,8 +39,9 @@ public class World implements Observer{
         this.plot();
     }
 
-    public void update(Observable o){
-        // o.getXYPosition();
+    public void update(BaseSpawnable observable){
+        // TODO:
+        observable.getXYPosition();
     }
 
     private void createEmptyWorld(){
