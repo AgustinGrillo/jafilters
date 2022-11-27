@@ -14,6 +14,8 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     // Spawnable related attributes
     protected float x;
     protected float y;
+    protected float previous_x;
+    protected float previous_y;
     private int id;
     private String symbol;
     // Observable related attributes
@@ -24,6 +26,8 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     public BaseSpawnable(float spawn_x, float spawn_y, int id, String symbol){
         this.x = spawn_x;
         this.y = spawn_y;
+        this.previous_x = spawn_x;
+        this.previous_y = spawn_y;
         this.id = id;
         this.symbol = symbol;
 
@@ -34,6 +38,8 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
 
     // TODO: Oberload method to accept different arguments
     public void move(float speed, float angle){
+        this.previous_x = this.x;
+        this.previous_y = this.y;
         if (_move(speed, angle)) {
             notifyObservers();
         }
@@ -41,6 +47,11 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     
     public float[] getXYPosition(){
         float[] pos = {this.x, this.y};
+        return pos;
+    }
+
+    public float[] getPreviousXYPosition(){
+        float[] pos = {this.previous_x, this.previous_y};
         return pos;
     }
 
