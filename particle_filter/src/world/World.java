@@ -4,8 +4,8 @@ import world.interfaces.Observer;
 import world.interfaces.Observable;
 import world.spawnables.*;
 import world.util.Color;
+import java.util.ArrayList;
 import java.lang.Math;
-import java.util.Random;
 
 
 /**
@@ -20,39 +20,27 @@ public class World implements Observer{
     private float height = 2;       // Coordinate
     private int render_rows = 20;   // Cell
     private int render_cols = 60;   // Cell
-    public BaseSpawnable[] radars;
-    public BaseSpawnable[] robots;
+    private ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>();
     BaseSpawnable[][] empty_world = new BaseSpawnable[render_rows][render_cols];
     BaseSpawnable[][] world;
 
-    Random randomizer = new Random();
-    
-    //
-    //"•"
-    //"•"
 
-
-    public World(){
+    public World(ArrayList<BaseSpawnable> initial_items){
+        // Create empty world
         createEmptyWorld();
         world = empty_world;
-        // robot = new Robot(randomizer.nextInt(width), randomizer.nextInt(height));
-        //
-        // int tow_x, tow_y;
-        // do {
-        //     tow_x = randomizer.nextInt(width);
-        //     tow_y = randomizer.nextInt(height);
-        // } while (tow_x == robot.x && tow_y == robot.y);
-        // tower1 = new Tower(tow_x, tow_y);
-        // do {
-        //     tow_x = randomizer.nextInt(width);
-        //     tow_y = randomizer.nextInt(height);
-        // } while ((tow_x == robot.x && tow_y == robot.y) || (tow_x == tower1.x && tow_y == tower1.y));
-        // tower2 = new Tower(tow_x, tow_y);
+
+        for (BaseSpawnable item : initial_items) {
+            items.add(item);
+            item.registerObserver(this);
+            int[] item_cell = coord2Cell(item.getXYPosition());
+            world[item_cell[0]][item_cell[1]] = item;
+        }
+        this.plot();
     }
 
     public void update(Observable o){
-        // TODO:
-
+        // o.getXYPosition();
     }
 
     private void createEmptyWorld(){
