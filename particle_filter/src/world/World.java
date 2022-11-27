@@ -30,6 +30,9 @@ public class World implements Observer{
 
 
     public World(ArrayList<BaseSpawnable> initial_items){
+        // Clean terminal
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();
         // Create empty world
         createEmptyWorld();
         // Create copy
@@ -106,6 +109,9 @@ public class World implements Observer{
     }
 
     public void plot(){
+        // Move cursor up to beggining 
+        System.out.print("\033[" + this.render_rows + ";0f");
+        // Format world into printable string
         String formatted_string = "";
         for (int i = 0; i < world.length; i++) {
             for (int j = 0; j < world[i].length; j++) {
