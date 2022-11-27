@@ -10,11 +10,14 @@ import java.lang.Math;
 
 /**
  * World
+ * 
+ * Coordinates:
+ *     y           Origin (○) at lower left corner.  
+ *     ↑
+ *     ○ → x
+ *
  */
 public class World implements Observer{
-    // TODO: Observer
-    // - Create array to store observables (items)
-    // - Implement update method
 
     private float width = 6;        // Coordinate
     private float height = 2;       // Coordinate
@@ -62,8 +65,8 @@ public class World implements Observer{
         int cell_row = cell[0];
         int cell_col = cell[1];
 
-        float coord_x = cell_col * width / render_cols; 
-        float coord_y = cell_row * height / render_rows; 
+        float coord_x = cell_col * width / (render_cols - 1); 
+        float coord_y = ((render_rows - 1) - cell_row) * height / (render_rows - 1); 
 
         return new float[]{coord_x, coord_y};
     }
@@ -72,8 +75,8 @@ public class World implements Observer{
         float coord_x = coord[0];
         float coord_y = coord[1];
 
-        int cell_col = Math.round(coord_x * render_cols / width); 
-        int cell_row = Math.round(coord_y * render_rows / height); 
+        int cell_col = Math.round(coord_x * (render_cols - 1) / width); 
+        int cell_row = (render_rows - 1) - Math.round(coord_y * (render_rows - 1) / height); 
 
         return new int[]{cell_row, cell_col};
 
