@@ -14,12 +14,20 @@ public class main {
         // Create items to spawn in world
         BaseSpawnable robot = new Robot(random.nextFloat(6), random.nextFloat(2), 1,
                                         Color.ANSI_GREEN + "•" + Color.ANSI_RESET);
-        BaseSpawnable radar = new Radar(random.nextFloat(6), random.nextFloat(2), 2,
+        BaseSpawnable radar1 = new Radar(random.nextFloat(6), random.nextFloat(2), 2,
                                         Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
-        ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>(Arrays.asList(robot, radar));
+        BaseSpawnable radar2 = new Radar(random.nextFloat(6), random.nextFloat(2), 3,
+                                        Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
+        ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>(Arrays.asList(robot, radar1, radar2));
 
         // Create world
         World world = new World(items);
+
+        for (int i = 0; i < 100; i++) {
+            try{Thread.sleep(50);}catch(InterruptedException e){System.out.println(e);}    
+            robot.move(0.2f, random.nextFloat(6.14f));
+            // robot.move(0.2f, 1.57f);
+        }
 
     }
 }

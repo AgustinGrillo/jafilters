@@ -48,6 +48,9 @@ public class World implements Observer{
     }
 
     public void update(BaseSpawnable observable){
+        // Check collision -> constrain item
+        observable.constrainMovement(0, width, 0, height);
+        // Update item position in world
         this.updateItemInWorld(observable);
         this.plot();
     }
@@ -76,7 +79,7 @@ public class World implements Observer{
         // Remove item from old position
         float[] old_coord = item.getPreviousXYPosition();
         int[] old_cell = coord2Cell(old_coord);
-        // Ckeck if there was another object in the previous pos, 
+        // Check if there was another object in the previous pos, 
         // to avoid deletion (due to overlap).
         BaseSpawnable item_prev_cell = empty_world[old_cell[0]][old_cell[1]];
         for (BaseSpawnable other_item : items) {
