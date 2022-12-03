@@ -18,10 +18,11 @@ public class main {
                                         Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
         BaseSpawnable radar2 = new Radar(random.nextFloat(6), random.nextFloat(2), 3,
                                         Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
-        ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>(Arrays.asList(robot, radar1, radar2));
+        ArrayList<BaseSpawnable> robots = new ArrayList<BaseSpawnable>(Arrays.asList(robot));
+        ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>(Arrays.asList(radar1, radar2));
 
         // Create world
-        World world = new World(items);
+        World world = new World(robots, radars);
 
         for (int i = 0; i < 100; i++) {
             try{Thread.sleep(100);}catch(InterruptedException e){System.out.println(e);}    

@@ -3,6 +3,7 @@ package world;
 import world.interfaces.Observer;
 import world.interfaces.Observable;
 import world.spawnables.*;
+import world.util.graphics.WorldGraphics;
 import world.util.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,116 +21,38 @@ import java.lang.Math;
  */
 public class World implements Observer{
 
-    private float width = 6;        // Coordinate
-    private float height = 2;       // Coordinate
-    private int render_rows = 20;   // Cell
-    private int render_cols = 60;   // Cell
-    private ArrayList<BaseSpawnable> items = new ArrayList<BaseSpawnable>();
-    BaseSpawnable[][] empty_world = new BaseSpawnable[render_rows][render_cols];
-    BaseSpawnable[][] world;
+    private float width = 10;        // Coordinate
+    private float height = 6;        // Coordinate
+    private ArrayList<BaseSpawnable> robots = new ArrayList<BaseSpawnable>();
+    private ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>();
+    private ArrayList<BaseSpawnable> estimations = new ArrayList<BaseSpawnable>();
+    WorldGraphics world_renderer; 
 
 
-    public World(ArrayList<BaseSpawnable> initial_items){
-        // Clean terminal
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();
-        // Create empty world
-        createEmptyWorld();
-        // Create copy
-        world = Arrays.stream(empty_world).map(BaseSpawnable[]::clone).toArray(BaseSpawnable[][]::new);
+    public World(ArrayList<BaseSpawnable> initial_robots, ArrayList<BaseSpawnable> initial_radars){
 
-        for (BaseSpawnable item : initial_items) {
-            items.add(item);
-            item.registerObserver(this);
-            int[] item_cell = coord2Cell(item.getXYPosition());
-            world[item_cell[0]][item_cell[1]] = item;
+        for (BaseSpawnable robot : initial_robots) {
+            robots.add(robot);
+            robot.registerObserver(this);
         }
-        this.plot();
+        for (BaseSpawnable radar : initial_radars) {
+            radars.add(radar);
+            radar.registerObserver(this);
+        }
+
+        world_renderer = new WorldGraphics(width, height, robots, radars);
     }
 
     public void update(BaseSpawnable observable){
         // Check collision -> constrain item
         observable.constrainMovement(0, width, 0, height);
         // Update item position in world
-        this.updateItemInWorld(observable);
-        this.plot();
+        this.updateItemRendering(observable);
     }
 
-    private void createEmptyWorld(){
-        // Overkill??
-        float[] floor_coord;
-        int floor_id = 0;
-        String floor_symbol = Color.ANSI_GREY + "·" + Color.ANSI_RESET;
 
-        for (int i = 0; i < empty_world.length; i++) {
-            for (int j = 0; j < empty_world[i].length; j++) {
-                floor_coord = cell2Coord(new int[]{i, j});
-                empty_world[i][j] = new Floor(floor_coord[0], floor_coord[1], floor_id, floor_symbol);
-            }
-        }
+    private void updateItemRendering(BaseSpawnable item){
+        world_renderer.plotWorld();
     }
 
-    private void updateItemInWorld(BaseSpawnable item){
-        // NOTE: Search for an alternative to increase performance and code prolixity.
-        // Get new item position
-        float[] new_coord = item.getXYPosition();
-        int[] new_cell = coord2Cell(new_coord);
-        // Get old item position
-        float[] old_coord = item.getPreviousXYPosition();
-        int[] old_cell = coord2Cell(old_coord);
-
-        // If item moved from cell
-        if (!Arrays.equals(new_cell, old_cell)) {
-            // Set in new cell
-            world[new_cell[0]][new_cell[1]] = item;
-            // Remove from old cell 
-            BaseSpawnable item_prev_cell = empty_world[old_cell[0]][old_cell[1]];
-            // Check if there was another object in the previous pos, 
-            // to avoid deletion (due to overlap).
-            for (BaseSpawnable other_item : items) {
-                if ((other_item.getID() != item.getID()) && Arrays.equals(coord2Cell(other_item.getXYPosition()), old_cell)) {
-                    item_prev_cell = other_item;
-                }
-            }
-            world[old_cell[0]][old_cell[1]] = item_prev_cell;
-        } 
-    }
-
-    private float[] cell2Coord(int[] cell){
-        int cell_row = cell[0];
-        int cell_col = cell[1];
-
-        float coord_x = cell_col * width / (render_cols - 1); 
-        float coord_y = ((render_rows - 1) - cell_row) * height / (render_rows - 1); 
-
-        return new float[]{coord_x, coord_y};
-    }
-
-    private int[] coord2Cell(float[] coord){
-        float coord_x = coord[0];
-        float coord_y = coord[1];
-
-        int cell_col = Math.round(coord_x * (render_cols - 1) / width); 
-        int cell_row = (render_rows - 1) - Math.round(coord_y * (render_rows - 1) / height); 
-
-        return new int[]{cell_row, cell_col};
-
-    }
-
-    public void plot(){
-        // Move cursor up to beggining 
-        System.out.print("\033[" + this.render_rows + ";0f");
-        // Format world into printable string
-        String formatted_string = "";
-        for (int i = 0; i < world.length; i++) {
-            for (int j = 0; j < world[i].length; j++) {
-                formatted_string += world[i][j].toString();
-            }
-            formatted_string += "\n";
-        }
-        formatted_string += "\n";
-
-        System.out.print(formatted_string);
-    }
-    
 }
