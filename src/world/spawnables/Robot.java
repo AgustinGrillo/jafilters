@@ -14,6 +14,7 @@ public class Robot extends BaseSpawnable{
     }
 
     protected boolean _move(float speed, float angle){
+        // TODO: Implement noisy commands
         this.x +=  (speed / 2) * Math.cos(angle);
         this.y +=  (speed / 2) * Math.sin(angle);
         return true;

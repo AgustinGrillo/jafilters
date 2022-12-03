@@ -17,5 +17,8 @@ public class Radar extends BaseSpawnable{
         return false;
     }
 
+    // TODO: Implement method to **estimate** distance to object
+    // Ideally subclass (or better compose (?)) this class to implement different noisy estimates.
+
 }
 
