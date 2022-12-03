@@ -24,9 +24,8 @@ public class main {
         World world = new World(items);
 
         for (int i = 0; i < 100; i++) {
-            try{Thread.sleep(50);}catch(InterruptedException e){System.out.println(e);}    
-            robot.move(0.2f, random.nextFloat(6.14f));
-            // robot.move(0.2f, 1.57f);
+            try{Thread.sleep(100);}catch(InterruptedException e){System.out.println(e);}    
+            robot.move(0.1f, random.nextFloat(6.14f));
         }
 
     }
