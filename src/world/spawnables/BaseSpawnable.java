@@ -59,16 +59,8 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
         // Collision -> Constrain movement to rectangle (wip)
         // TODO: Extend this to multiple geometries.
 
-        if (this.x < x_low) {
-            this.x = (2 * x_low - this.x);
-        } else if (this.x > x_high){
-            this.x = (2 * x_high - this.x);
-        }
-        if (this.y < y_low) {
-            this.y = (2 * y_low - this.y);
-        } else if (this.y > y_high){
-            this.y = (2 * y_high - this.y);
-        }
+        this.x = Math.max(x_low, Math.min(x_high, this.x));
+        this.y = Math.max(y_low, Math.min(y_high, this.y));
     }
 
     public int getID(){
