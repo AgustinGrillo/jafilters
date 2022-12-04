@@ -26,7 +26,7 @@ public class main {
 
         for (int i = 0; i < 100; i++) {
             try{Thread.sleep(100);}catch(InterruptedException e){System.out.println(e);}    
-            robot.move(0.1f, random.nextFloat(6.14f));
+            robot.move(0.5f, random.nextFloat(-1.0f, 1.0f));
         }
 
     }

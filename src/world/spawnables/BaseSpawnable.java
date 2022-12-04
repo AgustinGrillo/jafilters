@@ -14,6 +14,7 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     // Spawnable related attributes
     protected float x;
     protected float y;
+    protected float theta;
     protected float previous_x;
     protected float previous_y;
     private int id;
@@ -23,15 +24,20 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
 
     // Methods
     // Spawnable related methods
-    public BaseSpawnable(float spawn_x, float spawn_y, int id, String symbol){
+    public BaseSpawnable(float spawn_x, float spawn_y, float spawn_theta, int id, String symbol){
         this.x = spawn_x;
         this.y = spawn_y;
+        this.theta = spawn_theta;
         this.previous_x = spawn_x;
         this.previous_y = spawn_y;
         this.id = id;
         this.symbol = symbol;
 
         observers = new ArrayList<Observer> ();
+    }
+
+    public BaseSpawnable(float spawn_x, float spawn_y, int id, String symbol){
+        this(spawn_x, spawn_y, 0.0f, id, symbol);
     }
 
     abstract protected boolean _move(float speed, float angle);
@@ -48,6 +54,10 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     public float[] getXYPosition(){
         float[] pos = {this.x, this.y};
         return pos;
+    }
+
+    public float getOrientation(){
+        return this.theta;
     }
 
     public float[] getPreviousXYPosition(){
