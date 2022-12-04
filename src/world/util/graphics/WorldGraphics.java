@@ -17,7 +17,8 @@ public class WorldGraphics extends JFrame {
     int render_rows = 600;
     int render_cols = 1000;
     int robot_size = (int) (Math.min(this.render_cols, this.render_rows) / 30);
-    int radar_size = (int) (Math.min(this.render_cols, this.render_rows) / 30);
+    int radar_size = (int) (Math.min(this.render_cols, this.render_rows) / 50);
+    int render_border = this.robot_size / 2;
     // World dimensions
     float width;
     float height;
@@ -37,7 +38,7 @@ public class WorldGraphics extends JFrame {
         this.robots = robots;
         this.radars = radars;
         // Frame Size
-        setSize(this.render_cols, this.render_rows);
+        setSize(this.render_cols + 2 * this.render_border, this.render_rows + 2 * this.render_border);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         // Make frame visible
@@ -50,7 +51,7 @@ public class WorldGraphics extends JFrame {
         // Set color (RGBa)
         Color backgroundColor = new Color(223, 229, 179, 150);
         g2.setColor(backgroundColor);
-        g2.fillRect(0, 0, this.render_cols, this.render_rows);
+        g2.fillRect(0, 0, this.render_cols + 2 * this.render_border, this.render_rows + 2 * this.render_border);
     }
 
     void drawRobots(Graphics g) {
@@ -64,16 +65,18 @@ public class WorldGraphics extends JFrame {
             float theta = robot.getOrientation();
             // Plot
             Graphics2D g2 = (Graphics2D) g;
+            int robot_upperleft_corner_x = x - this.robot_size / 2 + this.render_border;
+            int robot_upperleft_corner_y = y - this.robot_size / 2 + this.render_border;
             g2.setColor(new Color(203, 218, 164, 100));
             g2.setStroke(new BasicStroke(1.6f));
-            g2.fillOval(x, y, this.robot_size, this.robot_size);
+            g2.fillOval(robot_upperleft_corner_x, robot_upperleft_corner_y, this.robot_size, this.robot_size);
             g2.setColor(new Color(203, 218, 164, 255));
-            g2.drawOval(x, y, this.robot_size, this.robot_size);
+            g2.drawOval(robot_upperleft_corner_x, robot_upperleft_corner_y, this.robot_size, this.robot_size);
 
-            int robot_center_x = x + this.robot_size / 2;
-            int robot_center_y = y + this.robot_size / 2;
-            int robot_heading_x = robot_center_x + (int) ((this.robot_size / 2) * Math.cos(theta));
-            int robot_heading_y = robot_center_y - (int) ((this.robot_size / 2) * Math.sin(theta));
+            int robot_center_x = x + this.render_border;
+            int robot_center_y = y + this.render_border;
+            int robot_heading_x = x + (int) ((this.robot_size / 2) * Math.cos(theta)) + this.render_border;
+            int robot_heading_y = y - (int) ((this.robot_size / 2) * Math.sin(theta)) + this.render_border;
             g2.drawLine(robot_center_x, robot_center_y, robot_heading_x, robot_heading_y);
         }
     }
@@ -88,11 +91,15 @@ public class WorldGraphics extends JFrame {
             int y = radar_cell[1];
             // Plot
             Graphics2D g2 = (Graphics2D) g;
+            int radar_upperleft_corner_x = x - this.radar_size / 2 + this.render_border;
+            int radar_upperleft_corner_y = y - this.radar_size / 2 + this.render_border;
             g2.setColor(new Color(204, 204, 204, 150));
-            g2.fillRoundRect(x, y, this.radar_size, this.radar_size, this.radar_size / 10, this.radar_size / 10);
+            g2.fillRoundRect(radar_upperleft_corner_x, radar_upperleft_corner_y, this.radar_size, this.radar_size,
+                    this.radar_size / 10, this.radar_size / 10);
             g2.setStroke(new BasicStroke(1.6f));
             g2.setColor(new Color(204, 204, 204, 255));
-            g2.drawRoundRect(x, y, this.radar_size, this.radar_size, this.radar_size / 10, this.radar_size / 10);
+            g2.drawRoundRect(radar_upperleft_corner_x, radar_upperleft_corner_y, this.radar_size, this.radar_size,
+                    this.radar_size / 10, this.radar_size / 10);
         }
     }
 
