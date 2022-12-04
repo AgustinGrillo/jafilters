@@ -87,8 +87,8 @@ public class WorldGraphics extends JFrame {
             float[] radar_coord = radar.getXYPosition();
             // Convert coordinate to cell
             int[] radar_cell = coord2Cell(radar_coord);
-            int x = radar_cell[0];
-            int y = radar_cell[1];
+            int y = radar_cell[0];
+            int x = radar_cell[1];
             // Plot
             Graphics2D g2 = (Graphics2D) g;
             int radar_upperleft_corner_x = x - this.radar_size / 2 + this.render_border;
