@@ -50,6 +50,11 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
             notifyObservers();
         }
     }
+
+    // TODO: BaseSpawnable should be sub-classed
+    public float[] senseObject(BaseSpawnable object) {
+        return new float[] {0, 0};
+    }
     
     public float[] getXYPosition(){
         float[] pos = {this.x, this.y};
