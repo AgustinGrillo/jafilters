@@ -26,8 +26,8 @@ public class WorldGraphics extends JFrame {
     private ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>();
     private ArrayList<BaseSpawnable> estimations = new ArrayList<BaseSpawnable>();
 
-
-    public WorldGraphics(float world_width, float world_height, ArrayList<BaseSpawnable> robots, ArrayList<BaseSpawnable> radars) {
+    public WorldGraphics(float world_width, float world_height, ArrayList<BaseSpawnable> robots,
+            ArrayList<BaseSpawnable> radars) {
         // Title our frame
         super("Robot's World");
         // Set world attributes
@@ -59,8 +59,9 @@ public class WorldGraphics extends JFrame {
             float[] robot_coord = robot.getXYPosition();
             // Convert coordinate to cell
             int[] robot_cell = coord2Cell(robot_coord);
-            int x = robot_cell[0];
-            int y = robot_cell[1];
+            int y = robot_cell[0];
+            int x = robot_cell[1];
+            float theta = robot.getOrientation();
             // Plot
             Graphics2D g2 = (Graphics2D) g;
             g2.setColor(new Color(203, 218, 164, 100));
@@ -68,7 +69,12 @@ public class WorldGraphics extends JFrame {
             g2.fillOval(x, y, this.robot_size, this.robot_size);
             g2.setColor(new Color(203, 218, 164, 255));
             g2.drawOval(x, y, this.robot_size, this.robot_size);
-            g2.drawLine(x + this.robot_size / 2, y, x + this.robot_size / 2, y + this.robot_size / 2);
+
+            int robot_center_x = x + this.robot_size / 2;
+            int robot_center_y = y + this.robot_size / 2;
+            int robot_heading_x = robot_center_x + (int) ((this.robot_size / 2) * Math.cos(theta));
+            int robot_heading_y = robot_center_y - (int) ((this.robot_size / 2) * Math.sin(theta));
+            g2.drawLine(robot_center_x, robot_center_y, robot_heading_x, robot_heading_y);
         }
     }
 
@@ -109,24 +115,24 @@ public class WorldGraphics extends JFrame {
     }
 
     // Utility functions related to spawnables
-    private float[] cell2Coord(int[] cell){
+    private float[] cell2Coord(int[] cell) {
         int cell_row = cell[0];
         int cell_col = cell[1];
 
-        float coord_x = cell_col * this.width / (this.render_cols - 1); 
-        float coord_y = ((this.render_rows - 1) - cell_row) * this.height / (this.render_rows - 1); 
+        float coord_x = cell_col * this.width / (this.render_cols - 1);
+        float coord_y = ((this.render_rows - 1) - cell_row) * this.height / (this.render_rows - 1);
 
-        return new float[]{coord_x, coord_y};
+        return new float[] { coord_x, coord_y };
     }
 
-    private int[] coord2Cell(float[] coord){
+    private int[] coord2Cell(float[] coord) {
         float coord_x = coord[0];
         float coord_y = coord[1];
 
-        int cell_col = Math.round(coord_x * (this.render_cols - 1) / this.width); 
-        int cell_row = (this.render_rows - 1) - Math.round(coord_y * (this.render_rows - 1) / this.height); 
+        int cell_col = Math.round(coord_x * (this.render_cols - 1) / this.width);
+        int cell_row = (this.render_rows - 1) - Math.round(coord_y * (this.render_rows - 1) / this.height);
 
-        return new int[]{cell_row, cell_col};
+        return new int[] { cell_row, cell_col };
 
     }
 
