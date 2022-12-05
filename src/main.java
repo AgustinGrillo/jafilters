@@ -9,6 +9,7 @@ public class main {
 
     public static void main(String[] args) {
         Random random = new Random();
+        float deltaT = 0.1f; // Seconds
 
         // Create items to spawn in world
         BaseSpawnable robot = new Robot(random.nextFloat(10), random.nextFloat(6), random.nextFloat(6.3f));
@@ -19,10 +20,11 @@ public class main {
 
         // Create world
         World world = new World(robots, radars);
+        world.setSimTimeStep(deltaT);
 
         for (int i = 0; i < 1000; i++) {
             try {
-                Thread.sleep(100);
+                Thread.sleep((int) (1000 * deltaT));
             } catch (InterruptedException e) {
                 System.out.println(e);
             }

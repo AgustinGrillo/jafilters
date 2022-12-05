@@ -15,10 +15,9 @@ public class Robot extends BaseSpawnable{
 
     protected boolean _move(float linar_speed, float angular_speed){
         // TODO: Implement noisy commands
-        float deltaT = 0.1f;
-        this.x +=  (linar_speed * deltaT) * Math.cos(this.theta);
-        this.y +=  (linar_speed * deltaT) * Math.sin(this.theta);
-        this.theta += angular_speed * deltaT;
+        this.x +=  (linar_speed * this.delta_t) * Math.cos(this.theta);
+        this.y +=  (linar_speed * this.delta_t) * Math.sin(this.theta);
+        this.theta += angular_speed * this.delta_t;
         return true;
     }
 
