@@ -9,8 +9,8 @@ import java.lang.Math;
  */
 public class Robot extends BaseSpawnable{
 
-    public Robot(float spawn_x, float spawn_y, int id, String symbol){
-        super(spawn_x, spawn_y, id, symbol);
+    public Robot(float spawn_x, float spawn_y, float spawn_theta){
+        super(spawn_x, spawn_y, spawn_theta);
     }
 
     protected boolean _move(float linar_speed, float angular_speed){

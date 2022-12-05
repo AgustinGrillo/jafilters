@@ -17,27 +17,34 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
     protected float theta;
     protected float previous_x;
     protected float previous_y;
+    protected float delta_t;
     private int id;
-    private String symbol;
     // Observable related attributes
     private ArrayList<Observer> observers;
 
     // Methods
     // Spawnable related methods
-    public BaseSpawnable(float spawn_x, float spawn_y, float spawn_theta, int id, String symbol){
+    public BaseSpawnable(float spawn_x, float spawn_y, float spawn_theta, int id){
         this.x = spawn_x;
         this.y = spawn_y;
         this.theta = spawn_theta;
         this.previous_x = spawn_x;
         this.previous_y = spawn_y;
         this.id = id;
-        this.symbol = symbol;
 
         observers = new ArrayList<Observer> ();
     }
 
-    public BaseSpawnable(float spawn_x, float spawn_y, int id, String symbol){
-        this(spawn_x, spawn_y, 0.0f, id, symbol);
+    public BaseSpawnable(float spawn_x, float spawn_y, float spawn_theta){
+        this(spawn_x, spawn_y, spawn_theta, 0);
+    }
+
+    public BaseSpawnable(float spawn_x, float spawn_y, int id){
+        this(spawn_x, spawn_y, 0.0f, id);
+    }
+
+    public BaseSpawnable(float spawn_x, float spawn_y){
+        this(spawn_x, spawn_y, 0.0f, 0);
     }
 
     abstract protected boolean _move(float speed, float angle);
@@ -82,14 +89,6 @@ abstract public class BaseSpawnable implements Observable, Spawnable{
         return this.id;
     }
 
-    public String getSymbol(){
-        return this.symbol;
-    }
-
-    public String toString() {
-        return this.symbol;
-    }
-    
     // Observable related methods
     public void registerObserver(Observer o){
         this.observers.add(o);

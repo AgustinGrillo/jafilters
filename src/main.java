@@ -11,14 +11,11 @@ public class main {
         Random random = new Random();
 
         // Create items to spawn in world
-        BaseSpawnable robot = new Robot(random.nextFloat(10), random.nextFloat(6), 1,
-                Color.ANSI_GREEN + "•" + Color.ANSI_RESET);
-        BaseSpawnable radar1 = new Radar(random.nextFloat(10), random.nextFloat(6), 2,
-                Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
-        BaseSpawnable radar2 = new Radar(random.nextFloat(10), random.nextFloat(6), 3,
-                Color.ANSI_YELLOW + "□" + Color.ANSI_RESET);
+        BaseSpawnable robot = new Robot(random.nextFloat(10), random.nextFloat(6), random.nextFloat(6.3f));
+        BaseSpawnable radar1 = new Radar(random.nextFloat(10), random.nextFloat(6));
+        BaseSpawnable radar2 = new Radar(random.nextFloat(10), random.nextFloat(6));
         ArrayList<BaseSpawnable> robots = new ArrayList<BaseSpawnable>(Arrays.asList(robot));
-        ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>(Arrays.asList(radar1));
+        ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>(Arrays.asList(radar1, radar2));
 
         // Create world
         World world = new World(robots, radars);
