@@ -28,7 +28,7 @@ public class WorldGraphics extends JFrame {
     private ArrayList<BaseSpawnable> estimations = new ArrayList<BaseSpawnable>();
 
     public WorldGraphics(float world_width, float world_height, ArrayList<BaseSpawnable> robots,
-            ArrayList<BaseSpawnable> radars) {
+            ArrayList<BaseSpawnable> radars, ArrayList<BaseSpawnable> estimations) {
         // Title our frame
         super("Robot's World");
         // Set world attributes
@@ -37,6 +37,7 @@ public class WorldGraphics extends JFrame {
         // TODO: Create copy of arrays
         this.robots = robots;
         this.radars = radars;
+        this.estimations = estimations;
         // Frame Size
         setSize(this.render_cols + 2 * this.render_border, this.render_rows + 2 * this.render_border);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,9 +105,18 @@ public class WorldGraphics extends JFrame {
     }
 
     void drawEstimations(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(203, 218, 164, 220));
-        g2.fillOval(500, 300, 10, 10);
+        for (BaseSpawnable estimation : this.estimations) {
+            Graphics2D g2 = (Graphics2D) g;
+            // Get coordinate
+            float[] estimation_coord = estimation.getXYPosition();
+            // Convert coordinate to cell
+            int[] estimation_cell = coord2Cell(estimation_coord);
+            int y = estimation_cell[0];
+            int x = estimation_cell[1];
+            g2.setColor(new Color(203, 218, 164, 220));
+            int size = 6;
+            g2.fillOval(x-size/2, y-size/2, size, size);
+        }
     }
 
     public void plotWorld() {

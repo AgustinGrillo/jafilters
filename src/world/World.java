@@ -28,7 +28,8 @@ public class World implements Observer {
     private ArrayList<BaseSpawnable> estimations = new ArrayList<BaseSpawnable>();
     WorldGraphics world_renderer;
 
-    public World(ArrayList<BaseSpawnable> initial_robots, ArrayList<BaseSpawnable> initial_radars) {
+    public World(ArrayList<BaseSpawnable> initial_robots, ArrayList<BaseSpawnable> initial_radars,
+            ArrayList<BaseSpawnable> initial_estimations) {
 
         for (BaseSpawnable robot : initial_robots) {
             robots.add(robot);
@@ -38,9 +39,13 @@ public class World implements Observer {
             radars.add(radar);
             radar.registerObserver(this);
         }
+        for (BaseSpawnable estimation : initial_estimations) {
+            estimations.add(estimation);
+            // particle.registerObserver(this);
+        }
 
         this.setSimTimeStep(this.time_step);
-        world_renderer = new WorldGraphics(width, height, robots, radars);
+        world_renderer = new WorldGraphics(width, height, robots, radars, estimations);
     }
 
     public void setSimTimeStep(float time_step) {
@@ -51,6 +56,9 @@ public class World implements Observer {
         }
         for (BaseSpawnable radar : this.radars) {
             radar.setTimeStep(this.time_step);
+        }
+        for (BaseSpawnable particle : this.estimations) {
+            particle.setTimeStep(this.time_step);
         }
     }
 
