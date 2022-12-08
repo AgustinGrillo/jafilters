@@ -18,12 +18,12 @@ public class main {
         ArrayList<BaseSpawnable> radars = new ArrayList<BaseSpawnable>();
         ArrayList<BaseSpawnable> particles = new ArrayList<BaseSpawnable>();
 
-        robots.add(new Robot(random.nextFloat(10), random.nextFloat(6), random.nextFloat(6.3f)));
+        robots.add(new Robot(random.nextFloat(10), random.nextFloat(6), random.nextFloat(-3.14f, 3.14f)));
         for (int i = 0; i < num_radars; i++) {
             radars.add(new Radar(random.nextFloat(10), random.nextFloat(6)));
         }
         for (int i = 0; i < num_particles; i++) {
-            particles.add(new Particle(random.nextFloat(10), random.nextFloat(6)));
+            particles.add(new Particle(random.nextFloat(10), random.nextFloat(6), random.nextFloat(-3.14f, 3.14f)));
         }
 
         // Create world

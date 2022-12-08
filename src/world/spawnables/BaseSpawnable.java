@@ -16,7 +16,9 @@ abstract public class BaseSpawnable implements Observable, Spawnable {
     protected float theta;
     protected float previous_x;
     protected float previous_y;
+    protected float previous_theta;
     protected float delta_t = 0.1f;
+    public float size = 1.0f;
     private int id;
     // Observable related attributes
     private ArrayList<Observer> observers;
@@ -29,6 +31,7 @@ abstract public class BaseSpawnable implements Observable, Spawnable {
         this.theta = spawn_theta;
         this.previous_x = spawn_x;
         this.previous_y = spawn_y;
+        this.previous_theta = spawn_theta;
         this.id = id;
 
         observers = new ArrayList<Observer>();
@@ -46,13 +49,27 @@ abstract public class BaseSpawnable implements Observable, Spawnable {
         this(spawn_x, spawn_y, 0.0f, 0);
     }
 
-    abstract protected boolean _move(float speed, float angle);
+    abstract protected boolean _move(float a, float b);
 
-    // TODO: Oberload method to accept different arguments
+    protected void rotate(float theta) {
+        this.theta = theta;
+    }
+
     public void move(float speed, float angle) {
         this.previous_x = this.x;
         this.previous_y = this.y;
+        this.previous_theta = this.theta;
         if (_move(speed, angle)) {
+            notifyObservers();
+        }
+    }
+
+    public void move(float x, float y, float theta) {
+        this.previous_x = this.x;
+        this.previous_y = this.y;
+        this.previous_theta = this.theta;
+        this.rotate(theta);
+        if (_move(x, y)) {
             notifyObservers();
         }
     }
