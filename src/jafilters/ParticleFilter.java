@@ -9,6 +9,7 @@ import java.lang.Math;
 import org.apache.commons.rng.UniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 import org.apache.commons.rng.sampling.*;
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
 /**
  * Particle Filter
@@ -34,8 +35,8 @@ public class ParticleFilter {
 
         int num_particles = this.particles.size();
 
-        particles_weight = new double[this.particles.size()];
-        Arrays.fill(particles_weight, 1 / (double) num_particles);
+        this.particles_weight = new double[this.particles.size()];
+        Arrays.fill(this.particles_weight, 1 / (double) num_particles);
 
     }
 
@@ -43,7 +44,7 @@ public class ParticleFilter {
         // Importance Sampling over each particle
 
         DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
-                this.particles, particles_weight);
+                this.particles, this.particles_weight);
 
         for (int idx = 0; idx < this.particles.size(); idx++) {
             // Propagate particle
@@ -72,6 +73,30 @@ public class ParticleFilter {
             particle.constrainMovement(0, 10, 0, 6);
 
             // Update weight
+            float weight_correction = 1.0f;
+            for (BaseSpawnable radar : this.radars) {
+                // Get current measurement
+                float[] measurement = radar.senseObject(this.robots.get(0));
+                double measured_distance = (double) measurement[0];
+                double measured_angle = (double) measurement[1];
+                double[] measurement_mean = { measured_distance, measured_angle };
+                double[][] sensor_cov = { { 0.2, 0.0 }, { 0.0, 0.2 } };
+                MultivariateNormalDistribution sensor_dist = new MultivariateNormalDistribution(measurement_mean,
+                        sensor_cov);
+                // Calculate expected measurement based on predicted particle state
+                float[] radar_pos = radar.getXYPosition();
+                double expected_measured_distance = (double) Math
+                        .sqrt((float) Math.pow((next_particle_x - radar_pos[0]), 2.0f)
+                                + (float) Math.pow((next_particle_y - radar_pos[1]), 2.0f));
+                double expected_measured_angle = (double) Math.atan2((float) (next_particle_y - radar_pos[1]),
+                        (float) (next_particle_x - radar_pos[0]));
+                double[] expected_measurement = { expected_measured_distance, expected_measured_angle };
+                double measurement_probability = sensor_dist.density(expected_measurement);
+                weight_correction *= measurement_probability;
+
+            }
+            this.particles_weight[idx] *= weight_correction;
+
         }
 
     }
