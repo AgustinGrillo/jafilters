@@ -30,8 +30,8 @@ public class main {
         World world = new World(robots, radars, particles);
         world.setSimTimeStep(deltaT);
 
-        // // Initialize filter
-        // ParticleFilter filter = new ParticleFilter();
+        // Initialize filter
+        ParticleFilter filter = new ParticleFilter(robots, radars, particles);
 
 
         for (int i = 0; i < 1000; i++) {
@@ -40,7 +40,10 @@ public class main {
             } catch (InterruptedException e) {
                 System.out.println(e);
             }
-            robots.get(0).move(0.5f, random.nextFloat(-1.0f, 1.0f));
+            float linear_vel = 0.5f;
+            float anglular_vel = random.nextFloat(-1.0f, 1.0f);
+            robots.get(0).move(linear_vel, anglular_vel);
+            filter.update(linear_vel, anglular_vel);
         }
 
     }
