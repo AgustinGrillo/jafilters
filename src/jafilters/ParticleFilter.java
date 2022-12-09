@@ -25,6 +25,9 @@ public class ParticleFilter {
     Random random = new Random();
     UniformRandomProvider rng = RandomSource.XO_RO_SHI_RO_128_PP.create();
 
+    // Epsilon value to avoid division by 0
+    double eps = 1e-7;
+
     public ParticleFilter(ArrayList<BaseSpawnable> initial_robots, ArrayList<BaseSpawnable> initial_radars,
             ArrayList<BaseSpawnable> initial_particles) {
 
@@ -59,21 +62,21 @@ public class ParticleFilter {
             float next_particle_x = (float) this.random
                     .nextGaussian(
                             current_particle_x + commanded_linear_speed * delta_t * Math.cos(current_particle_theta),
-                            0.0f);
+                            0.2f);
             float next_particle_y = (float) this.random
                     .nextGaussian(
                             current_particle_y + commanded_linear_speed * delta_t * Math.sin(current_particle_theta),
-                            0.0f);
+                            0.2f);
             float next_particle_theta = (float) this.random
                     .nextGaussian(
                             current_particle_theta + commanded_angular_speed * delta_t,
-                            0.0f);
+                            0.5f);
             // Update particle state
             particle.move(next_particle_x, next_particle_y, next_particle_theta);
             particle.constrainMovement(0, 10, 0, 6);
 
             // Update weight
-            float weight_correction = 1.0f;
+            double weight_correction = 1.0;
             for (BaseSpawnable radar : this.radars) {
                 // Get current measurement
                 float[] measurement = radar.senseObject(this.robots.get(0));
@@ -95,6 +98,7 @@ public class ParticleFilter {
                 weight_correction *= measurement_probability;
 
             }
+            weight_correction = Math.max(this.eps, weight_correction);
             this.particles_weight[idx] *= weight_correction;
 
         }
