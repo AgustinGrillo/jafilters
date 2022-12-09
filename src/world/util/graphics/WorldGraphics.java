@@ -18,7 +18,7 @@ public class WorldGraphics extends JFrame {
     int render_cols = 1000;
     int robot_size = (int) (Math.min(this.render_cols, this.render_rows) / 30);
     int radar_size = (int) (Math.min(this.render_cols, this.render_rows) / 50);
-    int render_border = this.robot_size / 2;
+    int render_border = 2 * this.robot_size / 2;
     // World dimensions
     float width;
     float height;
@@ -111,8 +111,8 @@ public class WorldGraphics extends JFrame {
             float[] estimation_coord = estimation.getXYPosition();
             // Convert coordinate to cell
             int[] estimation_cell = coord2Cell(estimation_coord);
-            int y = estimation_cell[0];
-            int x = estimation_cell[1];
+            int y = estimation_cell[0] + this.render_border;
+            int x = estimation_cell[1] + this.render_border;
             g2.setColor(new Color(203, 218, 164, 220));
             int size = 6;
             g2.fillOval(x-size/2, y-size/2, size, size);
