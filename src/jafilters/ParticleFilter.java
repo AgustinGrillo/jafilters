@@ -43,14 +43,16 @@ public class ParticleFilter {
         // Importance Sampling over each particle
 
         DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
-                particles, particles_weight);
+                this.particles, particles_weight);
 
-        for (BaseSpawnable particle : particles) {
+        for (int idx = 0; idx < this.particles.size(); idx++) {
             // Propagate particle
+            BaseSpawnable particle = this.particles.get(idx);
+            BaseSpawnable reference_particle = (BaseSpawnable) particle_sampler.sample();
             // Get current particle state
-            float current_particle_x = particle.getXYPosition()[0];
-            float current_particle_y = particle.getXYPosition()[1];
-            float current_particle_theta = particle.getOrientation();
+            float current_particle_x = reference_particle.getXYPosition()[0];
+            float current_particle_y = reference_particle.getXYPosition()[1];
+            float current_particle_theta = reference_particle.getOrientation();
             // Sample next particle state from normal distribution
             float delta_t = 0.1f;
             float next_particle_x = (float) this.random

@@ -11,7 +11,7 @@ public class main {
         Random random = new Random();
         float deltaT = 0.1f; // Seconds
         int num_radars = 3;
-        int num_particles = 20;
+        int num_particles = 2000;
 
         // Create items to spawn in world
         ArrayList<BaseSpawnable> robots = new ArrayList<BaseSpawnable>();
