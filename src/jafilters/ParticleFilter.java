@@ -98,6 +98,11 @@ public class ParticleFilter {
             this.particles_weight[idx] *= weight_correction;
 
         }
+        // Normalize weights
+        double weights_sum = Arrays.stream(this.particles_weight).sum();
+        for (int index = 0; index < this.particles_weight.length; index++) {
+            this.particles_weight[index] /= weights_sum;
+        }
 
     }
 }
