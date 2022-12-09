@@ -68,10 +68,10 @@ public class WorldGraphics extends JFrame {
             Graphics2D g2 = (Graphics2D) g;
             int robot_upperleft_corner_x = x - this.robot_size / 2 + this.render_border;
             int robot_upperleft_corner_y = y - this.robot_size / 2 + this.render_border;
-            g2.setColor(new Color(203, 218, 164, 100));
-            g2.setStroke(new BasicStroke(1.6f));
+            g2.setColor(new Color(204, 204, 204, 180));
+            g2.setStroke(new BasicStroke(2f));
             g2.fillOval(robot_upperleft_corner_x, robot_upperleft_corner_y, this.robot_size, this.robot_size);
-            g2.setColor(new Color(203, 218, 164, 255));
+            g2.setColor(new Color(204, 204, 204, 255));
             g2.drawOval(robot_upperleft_corner_x, robot_upperleft_corner_y, this.robot_size, this.robot_size);
 
             int robot_center_x = x + this.render_border;
@@ -113,7 +113,7 @@ public class WorldGraphics extends JFrame {
             int[] estimation_cell = coord2Cell(estimation_coord);
             int y = estimation_cell[0] + this.render_border;
             int x = estimation_cell[1] + this.render_border;
-            g2.setColor(new Color(203, 218, 164, 220));
+            g2.setColor(new Color(203, 218, 164, 40));
             int size = 6;
             g2.fillOval(x-size/2, y-size/2, size, size);
         }
