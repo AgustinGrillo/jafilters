@@ -47,32 +47,32 @@ public class ParticleFilter {
         // Importance Sampling over each particle
 
         DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
-                this.particles, this.particles_weight);
+                new ArrayList(this.particles), this.particles_weight.clone());
 
         for (int idx = 0; idx < this.particles.size(); idx++) {
             // Propagate particle
             BaseSpawnable particle = this.particles.get(idx);
             BaseSpawnable reference_particle = (BaseSpawnable) particle_sampler.sample();
             // Get current particle state
-            float current_particle_x = reference_particle.getXYPosition()[0];
-            float current_particle_y = reference_particle.getXYPosition()[1];
-            float current_particle_theta = reference_particle.getOrientation();
+            float particle_current_x = reference_particle.getXYPosition()[0];
+            float particle_current_y = reference_particle.getXYPosition()[1];
+            float particle_current_theta = reference_particle.getOrientation();
             // Sample next particle state from normal distribution
-            float delta_t = 0.1f;
-            float next_particle_x = (float) this.random
+            float delta_t = 0.1f;  // NOTE: Hardcoded
+            float particle_next_x = (float) this.random
                     .nextGaussian(
-                            current_particle_x + commanded_linear_speed * delta_t * Math.cos(current_particle_theta),
+                            particle_current_x + commanded_linear_speed * delta_t * Math.cos(particle_current_theta),
                             0.2f);
-            float next_particle_y = (float) this.random
+            float particle_next_y = (float) this.random
                     .nextGaussian(
-                            current_particle_y + commanded_linear_speed * delta_t * Math.sin(current_particle_theta),
+                            particle_current_y + commanded_linear_speed * delta_t * Math.sin(particle_current_theta),
                             0.2f);
-            float next_particle_theta = (float) this.random
+            float particle_next_theta = (float) this.random
                     .nextGaussian(
-                            current_particle_theta + commanded_angular_speed * delta_t,
+                            particle_current_theta + commanded_angular_speed * delta_t,
                             0.5f);
             // Update particle state
-            particle.move(next_particle_x, next_particle_y, next_particle_theta);
+            particle.move(particle_next_x, particle_next_y, particle_next_theta);
             particle.constrainMovement(0, 10, 0, 6);
 
             // Update weight
@@ -89,10 +89,10 @@ public class ParticleFilter {
                 // Calculate expected measurement based on predicted particle state
                 float[] radar_pos = radar.getXYPosition();
                 double expected_measured_distance = (double) Math
-                        .sqrt((float) Math.pow((next_particle_x - radar_pos[0]), 2.0f)
-                                + (float) Math.pow((next_particle_y - radar_pos[1]), 2.0f));
-                double expected_measured_angle = (double) Math.atan2((float) (next_particle_y - radar_pos[1]),
-                        (float) (next_particle_x - radar_pos[0]));
+                        .sqrt((float) Math.pow((particle_next_x - radar_pos[0]), 2.0f)
+                                + (float) Math.pow((particle_next_y - radar_pos[1]), 2.0f));
+                double expected_measured_angle = (double) Math.atan2((float) (particle_next_y - radar_pos[1]),
+                        (float) (particle_next_x - radar_pos[0]));
                 double[] expected_measurement = { expected_measured_distance, expected_measured_angle };
                 double measurement_probability = sensor_dist.density(expected_measurement);
                 weight_correction *= measurement_probability;
