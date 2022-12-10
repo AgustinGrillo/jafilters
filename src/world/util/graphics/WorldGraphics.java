@@ -114,7 +114,7 @@ public class WorldGraphics extends JFrame {
             int y = estimation_cell[0] + this.render_border;
             int x = estimation_cell[1] + this.render_border;
             g2.setColor(new Color(203, 218, 164, 40));
-            int size = 6;
+            int size = Math.max((int) estimation.size, 2);
             g2.fillOval(x-size/2, y-size/2, size, size);
         }
     }

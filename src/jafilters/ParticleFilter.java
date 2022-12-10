@@ -104,6 +104,7 @@ public class ParticleFilter {
 
             }
             weight_correction = Math.max(this.eps, weight_correction);
+            this.particles.get(idx).size = 6; //30 * (float) weight_correction;
             this.particles_weight[idx] *= weight_correction;
 
         }
