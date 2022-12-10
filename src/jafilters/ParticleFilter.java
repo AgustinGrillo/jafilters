@@ -46,24 +46,15 @@ public class ParticleFilter {
     public void update(float commanded_linear_speed, float commanded_angular_speed) {
         // Importance Sampling over each particle
 
-        //Deep Copy particles 
-        ArrayList<BaseSpawnable> particles_clone = new ArrayList<BaseSpawnable>();
-        for (BaseSpawnable particle : this.particles) {
-            particles_clone.add(new Particle(particle.getXYPosition()[0], particle.getXYPosition()[1], particle.getOrientation()));
-        }
-        DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
-               particles_clone, this.particles_weight.clone());
-
         for (int idx = 0; idx < this.particles.size(); idx++) {
             // Propagate particle
             BaseSpawnable particle = this.particles.get(idx);
-            BaseSpawnable reference_particle = (BaseSpawnable) particle_sampler.sample();
             // Get current particle state
-            float particle_current_x = reference_particle.getXYPosition()[0];
-            float particle_current_y = reference_particle.getXYPosition()[1];
-            float particle_current_theta = reference_particle.getOrientation();
+            float particle_current_x = particle.getXYPosition()[0];
+            float particle_current_y = particle.getXYPosition()[1];
+            float particle_current_theta = particle.getOrientation();
             // Sample next particle state from normal distribution
-            float delta_t = 0.1f;  // NOTE: Hardcoded
+            float delta_t = 0.1f; // NOTE: Hardcoded
             float particle_next_x = (float) this.random
                     .nextGaussian(
                             particle_current_x + commanded_linear_speed * delta_t * Math.cos(particle_current_theta),
@@ -104,7 +95,7 @@ public class ParticleFilter {
 
             }
             weight_correction = Math.max(this.eps, weight_correction);
-            this.particles.get(idx).size = 30 * (float) weight_correction;
+            this.particles.get(idx).size = 10 * (float) weight_correction;
             this.particles_weight[idx] *= weight_correction;
 
         }
@@ -113,6 +104,25 @@ public class ParticleFilter {
         for (int index = 0; index < this.particles_weight.length; index++) {
             this.particles_weight[index] /= weights_sum;
         }
+
+        // Resample particles
+        // Deep Copy particles
+        ArrayList<BaseSpawnable> particles_clone = new ArrayList<BaseSpawnable>();
+        for (BaseSpawnable particle : this.particles) {
+            particles_clone.add(
+                    new Particle(particle.getXYPosition()[0], particle.getXYPosition()[1], particle.getOrientation()));
+        }
+        DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
+                particles_clone, this.particles_weight.clone());
+        for (int idx = 0; idx < this.particles.size(); idx++) {
+            BaseSpawnable sampled_particle = (BaseSpawnable) particle_sampler.sample();
+            // NOTE: Old particle state is updated (moved) based from sampled particle
+            // state, to avoid rendering problems.
+            // TODO: Improve
+            this.particles.get(idx).move(sampled_particle.getXYPosition()[0], sampled_particle.getXYPosition()[1],
+                    sampled_particle.getOrientation());
+        }
+        Arrays.fill(this.particles_weight, 1 / (double) this.particles.size());
 
     }
 }
