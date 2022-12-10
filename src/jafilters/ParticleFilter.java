@@ -46,8 +46,13 @@ public class ParticleFilter {
     public void update(float commanded_linear_speed, float commanded_angular_speed) {
         // Importance Sampling over each particle
 
+        //Deep Copy particles 
+        ArrayList<BaseSpawnable> particles_clone = new ArrayList<BaseSpawnable>();
+        for (BaseSpawnable particle : this.particles) {
+            particles_clone.add(new Particle(particle.getXYPosition()[0], particle.getXYPosition()[1], particle.getOrientation()));
+        }
         DiscreteProbabilityCollectionSampler particle_sampler = new DiscreteProbabilityCollectionSampler(rng,
-                new ArrayList(this.particles), this.particles_weight.clone());
+               particles_clone, this.particles_weight.clone());
 
         for (int idx = 0; idx < this.particles.size(); idx++) {
             // Propagate particle
