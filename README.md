@@ -2,6 +2,11 @@
 
 Java library implementing different state estimation algorithms, such as:
 - Particle Filter (WIP)
+
+<p align="center">
+    <img src="resources/particle_filter.gif" height="300">
+</p>
+
 - Kalman Filter (TODO)
 
 ### Dependencies
