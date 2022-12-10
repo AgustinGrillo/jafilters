@@ -67,15 +67,15 @@ public class ParticleFilter {
             float particle_next_x = (float) this.random
                     .nextGaussian(
                             particle_current_x + commanded_linear_speed * delta_t * Math.cos(particle_current_theta),
-                            0.2f);
+                            0.05f);
             float particle_next_y = (float) this.random
                     .nextGaussian(
                             particle_current_y + commanded_linear_speed * delta_t * Math.sin(particle_current_theta),
-                            0.2f);
+                            0.05f);
             float particle_next_theta = (float) this.random
                     .nextGaussian(
                             particle_current_theta + commanded_angular_speed * delta_t,
-                            0.5f);
+                            0.1f);
             // Update particle state
             particle.move(particle_next_x, particle_next_y, particle_next_theta);
             particle.constrainMovement(0, 10, 0, 6);
@@ -88,7 +88,7 @@ public class ParticleFilter {
                 double measured_distance = (double) measurement[0];
                 double measured_angle = (double) measurement[1];
                 double[] measurement_mean = { measured_distance, measured_angle };
-                double[][] sensor_cov = { { 0.2, 0.0 }, { 0.0, 0.2 } };
+                double[][] sensor_cov = { { 0.15, 0.0 }, { 0.0, 0.15 } };
                 MultivariateNormalDistribution sensor_dist = new MultivariateNormalDistribution(measurement_mean,
                         sensor_cov);
                 // Calculate expected measurement based on predicted particle state
@@ -104,7 +104,7 @@ public class ParticleFilter {
 
             }
             weight_correction = Math.max(this.eps, weight_correction);
-            this.particles.get(idx).size = 6; //30 * (float) weight_correction;
+            this.particles.get(idx).size = 30 * (float) weight_correction;
             this.particles_weight[idx] *= weight_correction;
 
         }
