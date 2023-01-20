@@ -10,6 +10,7 @@ Java library implementing different state estimation algorithms, such as:
 - Kalman Filter (TODO)
 
 ### Dependencies
+- Java 18
 - Apache Commons Math 3.6.1
 - Apache Commons RNG  1.5
 
